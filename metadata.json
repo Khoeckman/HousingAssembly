@@ -1,0 +1,8 @@
+{
+  "name": "HousingAssembly",
+  "creator": "Khoeckman",
+  "description": "A ChatTriggers module to automate the creation of Hypixel Housing projects trough an intuitive custom programming language.",
+  "version": "0.0.1",
+  "entry": "dist/index.js",
+  "homepage": "https://github.com/Khoeckman/HousingAssembly"
+}

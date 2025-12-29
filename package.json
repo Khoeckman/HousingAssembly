@@ -1,0 +1,26 @@
+{
+  "name": "housing-assembly",
+  "description": "A ChatTriggers module to automate the creation of Hypixel Housing projects trough an intuitive custom programming language.",
+  "private": true,
+  "version": "0.0.0",
+  "author": "Khoeckman",
+  "type": "module",
+  "main": "dist/hasm.js",
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "tsc && vite build"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.3",
+    "vite": "npm:rolldown-vite@7.1.14",
+    "vitepress": "^2.0.0-alpha.13"
+  },
+  "homepage": "https://github.com/Khoeckman/HousingAssembly",
+  "bugs": {
+    "url": "https://github.com/Khoeckman/StorageManager/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Khoeckman/StorageManager.git"
+  }
+}
