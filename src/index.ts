@@ -1,3 +1,6 @@
+/// <reference types="../vendor/CTAutocomplete" />
+/// <reference lib="es2015" />
+
 import { NAME, chat, error, dialog } from './utils/ct'
 import metadata from './utils/metadata'
 
