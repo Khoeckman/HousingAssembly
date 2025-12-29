@@ -1,4 +1,4 @@
-import { NAME, PREFIX, chat, error } from './ct'
+import { NAME, chat, error } from './ct'
 import type { MetadataJson, Version } from '../types/metadata'
 
 // Helper class to load and parse the module's metadata.json
@@ -83,13 +83,14 @@ class Metadata {
 
     try {
       ChatLib.deleteChat(messageId)
-      ChatLib.chat(
-        new Message([
+      chat(
+        new Message(
           `&aVersion ${this.local.version} ${latestVersion} `,
-          new TextComponent(PREFIX + '&7[&8&lGitHub&7]')
+          new TextComponent('&7[&8&lGitHub&7]')
             .setHover('show_text', `&fClick to view ${NAME}&f on &8&lGitHub`)
-            .setClick('open_url', this.local.homepage.toString()),
-        ]).setChatLineId(messageId)
+            .setClick('open_url', this.local.homepage)
+        ),
+        messageId
       )
     } catch (err: any) {
       error(err)

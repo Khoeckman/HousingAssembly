@@ -2,11 +2,11 @@ const NAME = "&5&lHASM";
 const PREFIX = `&7[${NAME}&7]&r `;
 const TAB = "    ";
 const isJavaClass = (obj, className) => {
-	return obj && "getClassName" in obj && typeof obj.getClassName === "function" && obj.getClassName() === className;
+	return typeof obj === "object" && obj !== null && "getClass" in obj && typeof obj.getClass === "function" && obj.getClass().getName() === className;
 };
 const chat = (message, id = -1) => {
 	if (typeof message === "string" || isJavaClass(message, "com.chattriggers.ctjs.minecraft.objects.message.TextComponent")) message = new Message(PREFIX, message);
-	else if (isJavaClass(message, "com.chattriggers.ctjs.minecraft.objects.message.Message")) message.addTextComponent(0, PREFIX);
+	else if (isJavaClass(message, "com.chattriggers.ctjs.minecraft.objects.message.Message")) message.addTextComponent(0, new TextComponent(PREFIX));
 	else message = new Message(PREFIX, String(message));
 	if (id > -1) message = message.setChatLineId(id & 2147483647);
 	message.chat();
@@ -80,7 +80,7 @@ var metadata_default = new class Metadata {
 		const latestVersion = this.remote && typeof this.remote.version === "string" ? Metadata.compareVersions(this.local.version, this.remote.version) >= 0 ? "&2✔ Latest" : "&c✖ Latest " + this.remote.version : "&c✖ Latest unknown";
 		try {
 			ChatLib.deleteChat(messageId);
-			ChatLib.chat(new Message([`&aVersion ${this.local.version} ${latestVersion} `, new TextComponent(PREFIX + "&7[&8&lGitHub&7]").setHover("show_text", `&fClick to view ${NAME}&f on &8&lGitHub`).setClick("open_url", this.local.homepage.toString())]).setChatLineId(messageId));
+			chat(new Message(`&aVersion ${this.local.version} ${latestVersion} `, new TextComponent("&7[&8&lGitHub&7]").setHover("show_text", `&fClick to view ${NAME}&f on &8&lGitHub`).setClick("open_url", this.local.homepage)), messageId);
 		} catch (err) {
 			error(err);
 		}
