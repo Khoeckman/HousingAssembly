@@ -41,11 +41,8 @@ if [
 
 cancelEvent()
 
-@scope('function', 'Do stuff')
-@set('Edit Icon', @item('filePath')) // Set the function's item icon
-@set('Automatic Execution', 20) // Set the function to execute every 20 ticks
-
 player.name = 'Mike'
+player.lore = `Hello, ${player.name}`
 
 // Works like Python's range() enumerator.
 #for {i} in (10, 0, -2) { // i -> 10, 8, 6, 4, 2
@@ -61,9 +58,31 @@ global.x += player.x(0)<Double> // Equals %var.player.x/0%D
 
 player.x~ // Unset
 
+p.text = p.x~ // Tilde to enable Automatic Unset
+var text = "%var.player/x%" true
 
-player.x = ''! // `Automatic Unset` is set to true for Strings by HASM, use `!` to keep it false
-player.x += 1 ?? 0
+player.text = player.x! // Exclamation mark to disable Automatic Unset
+player.text = player.x? // Exclamation mark to enable Automatic Unset
+```
+
+### Style: Compact (harder to read but less code)
+
+```js
+TODO: Add this once the verbose example is complete
+```
+
+## HASM Projects
+
+Create a `config.hasm` to treat certain `.hasm` files as part of a housing project.
+
+You can then write a script that acts like a house boilerplate:
+
+```js
+@scope('function', 'Do stuff') // Create a function 'Do stuff'
+@set('Edit Icon', @item('filePath', x=$x)) // Set the function's item icon
+@set('Automatic Execution', 20) // Make the function execute every 20 ticks
+
+player.x = 1 // Create a 'Change Variable' action inside of the function
 
 @scope('house')
 @set('daylight cycle', true)
@@ -81,15 +100,13 @@ player.x = 1 // Error: cannot create actions inside scope 'house'
 @set('permission', Fly, false)
 ```
 
-### Style: Compact (harder to read but less code)
+Inside `./filePath.json`:
 
 ```js
-TODO: Add this once the verbose example is complete
+import x from 'args'
+$x = x
+export {Item:"minecraft:{x}"}
 ```
-
-## HASM Projects
-
-Instead of defining items and scopes in each file
 
 ## Docs & Scripting Guide
 
