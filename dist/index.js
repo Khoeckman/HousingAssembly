@@ -33,7 +33,7 @@ var metadata_default = new class Metadata {
 	local;
 	remote;
 	remoteURL = "null";
-	constructor(moduleName, fileName, remoteURL = "null") {
+	constructor(moduleName, fileName, remoteURL) {
 		try {
 			this.local = JSON.parse(FileLib.read(moduleName, fileName));
 		} catch (err) {
@@ -61,7 +61,7 @@ var metadata_default = new class Metadata {
 	getRemote(onFinally = () => {}) {
 		new Thread(() => {
 			try {
-				this.remote = JSON.parse(FileLib.getUrlContent(this.remoteURL.toString()) ?? null);
+				this.remote = JSON.parse(FileLib.getUrlContent(this.remoteURL) ?? null);
 			} catch (err) {
 				error(err, { printStackTrace: false });
 			} finally {
@@ -72,12 +72,13 @@ var metadata_default = new class Metadata {
 	printVersionStatus() {
 		if (!World.isLoaded()) return;
 		if (!this.local || typeof this.local.version !== "string") return error((/* @__PURE__ */ new TypeError(`Cannot read properties of ${this.local} (reading 'version')`)).toString());
-		chat(`&aVersion ${this.local.version} &7● Getting latest...`, 32486e3);
-		this.getRemote(() => this.updateVersionStatus(32486e3));
+		const messageId = 955846345;
+		chat(`&aVersion ${this.local.version} &7● Getting latest...`, messageId);
+		this.getRemote(() => this.updateVersionStatus(messageId));
 	}
 	updateVersionStatus = (messageId) => {
 		if (!World.isLoaded() || !this.local || !this.remote) return;
-		const latestVersion = this.remote && typeof this.remote.version === "string" ? Metadata.compareVersions(this.local.version, this.remote.version) >= 0 ? "&2✔ Latest" : "&c✖ Latest " + this.remote.version : "&c✖ Latest unknown";
+		const latestVersion = typeof this.remote.version === "string" ? Metadata.compareVersions(this.local.version, this.remote.version) >= 0 ? "&2✔ Latest" : "&c✖ Latest " + this.remote.version : "&c✖ Latest unknown";
 		try {
 			ChatLib.deleteChat(messageId);
 			chat(new Message(`&aVersion ${this.local.version} ${latestVersion} `, new TextComponent("&7[&8&lGitHub&7]").setHover("show_text", `&fClick to view ${NAME}&f on &8&lGitHub`).setClick("open_url", this.local.homepage)), messageId);
@@ -96,8 +97,24 @@ register("command", (command, ...args) => {
 		switch (command) {
 			case "":
 			case "help":
-				const commands = [`&6ver&esion &7 Prints the &fcurrent&7 and &flatest &aversion&7 of ${NAME}&7.`];
-				dialog("&eCommands", commands.map((line) => `&e/${rootCommand} ${line}`));
+				dialog("&eCommands", [
+					`&e/${rootCommand} &6c&eonfig &7 List all config values and information.`,
+					`&e/${rootCommand} &6c&eonfig set <key> <value> &7 Change a config value.`,
+					`&e/${rootCommand} &6c&eonfig get <key> &7 Get a config value and information.`,
+					`&e/${rootCommand} &6c&eonfig open &7 Open &fhasm.config.json&7 externally.`,
+					` &8 Example: &7/hasm config set rootPath "/path/to/hasm/files/"`,
+					``,
+					`&e/${rootCommand} &6h&eouse &eimport <path> &7 Execute a &f*.config.hasm&7 file on the current house.`,
+					`&e/${rootCommand} &6h&eouse &eexport <path> &7 Export current house settings to a &f*.config.hasm&7 file.`,
+					`&e/${rootCommand} &6h&eouse &ediff <path> &7 Show differences between current house settings and a &f*.config.hasm&7 file.`,
+					``,
+					`&e/${rootCommand} &6im&eport <path> [ <system>=<name> ] &7 Execute a &f*.hasm&7 file on a certain scope.`,
+					`&e/${rootCommand} &6ex&eport <path> <system>=<name> &7 Export all actions inside &e<scope>&7 to a &f*.hasm&7 file.`,
+					`&e/${rootCommand} &ediff <path> <system>=<name> &7 Show differences between all actions inside &e<scope>&7 and a &f*.hasm&7 file.`,
+					` &8 Example: &7/hasm diff "/path/to/file.hasm" function="Function Name"`,
+					``,
+					`&6ver&esion &7 Prints the &fcurrent&7 and &flatest &aversion&7 of ${NAME}&7.`
+				]);
 				break;
 			case "version":
 			case "ver":

@@ -39,7 +39,8 @@ Below is an overview explaining a broad amount of features and edge cases.
 
 if [
   not blockType(@item('fileName'), matchTypeOnly=true)
-  vp.x < vg.x ?? 1.0 // Uses 1.0 if g.x is Unset
+  vp.x < vg.x(1.0) // Equals %var.global/x 1.0%
+  vp.x < vg.x ?? 1.0 // Uses 1.0 if %var.global/x% is Unset
   // conditions...
 ] any {
   // actions...
@@ -65,7 +66,7 @@ vp.x += random.whole(1, 20)
 vp.name = vp.name // %var.player/name% (variable)
 vp.name = player.name // %player.name% (placeholder)
 
-vg.x += vp.x // TypeError: Cannot combine Double and Long. Did you forget to cast 'player.x' to a Double?
+vg.x += vp.x // TypeError: Cannot combine Double and Long. Did you forget to cast 'vp.x' to a Double?
 vg.x += (D) vp.x ?? 0 // %var.player.x/0%D
 vg.x += (D) vp.x(0) // %var.player.x/0%D
 vg.x += vp.x(0)<D> // %var.player.x/0%D

@@ -5,9 +5,9 @@ import type { MetadataJson, Version } from '../types/metadata'
 class Metadata {
   local: MetadataJson | null
   remote?: MetadataJson
-  remoteURL: string | 'null' = 'null'
+  remoteURL: string = 'null'
 
-  constructor(moduleName: string, fileName: string, remoteURL: string | 'null' = 'null') {
+  constructor(moduleName: string, fileName: string, remoteURL: string) {
     try {
       this.local = JSON.parse(FileLib.read(moduleName, fileName))
     } catch (err: any) {
@@ -39,7 +39,7 @@ class Metadata {
   getRemote(onFinally = () => {}) {
     new Thread(() => {
       try {
-        this.remote = JSON.parse(FileLib.getUrlContent(this.remoteURL.toString()) ?? null)
+        this.remote = JSON.parse(FileLib.getUrlContent(this.remoteURL) ?? null)
       } catch (err: any) {
         error(err, { printStackTrace: false })
       } finally {
@@ -54,28 +54,17 @@ class Metadata {
     if (!this.local || typeof this.local.version !== 'string')
       return error(new TypeError(`Cannot read properties of ${this.local} (reading 'version')`).toString())
 
-    /*if (false) {
-      chat(
-        new Message(
-          `&aVersion ${this.local.version} `,
-          new TextComponent('&7[&8&lGitHub&7]')
-            .setClick('open_url', this.local.homepage)
-            .setHover('show_text', `&fClick to view ${NAME}&f on &8&lGitHub`)
-        ).setChatLineId(32486000)
-      )
-      return
-    }*/
-
-    chat(`&aVersion ${this.local.version} &7● Getting latest...`, 32486000)
-
-    this.getRemote(() => this.updateVersionStatus(32486000))
+    // Message ID is used to update the placeholder message
+    const messageId = 955846345
+    chat(`&aVersion ${this.local.version} &7● Getting latest...`, messageId)
+    this.getRemote(() => this.updateVersionStatus(messageId))
   }
 
   updateVersionStatus = (messageId: number) => {
     if (!World.isLoaded() || !this.local || !this.remote) return
 
     const latestVersion =
-      this.remote && typeof this.remote.version === 'string'
+      typeof this.remote.version === 'string'
         ? Metadata.compareVersions(this.local.version, this.remote.version) >= 0
           ? '&2✔ Latest'
           : '&c✖ Latest ' + this.remote.version
