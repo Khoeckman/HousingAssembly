@@ -1,3 +1,10 @@
 {
-  "root": "C:/"
+  "default": {
+    "projectsDir": "./projects/"
+  },
+  "user": {
+    "*UUID*": {
+      "projectsDir": "./projects/"
+    }
+  }
 }

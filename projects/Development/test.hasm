@@ -1,0 +1,3 @@
+@scope(event, player block break)
+
+cancelEvent
