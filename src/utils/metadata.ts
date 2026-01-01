@@ -1,5 +1,5 @@
 import { NAME, chat, error } from './ct'
-import type { MetadataJson, Version } from '../types/metadata'
+import type { MetadataJson, Version } from '@/metadata'
 
 // Helper class to load and parse the module's metadata.json
 class Metadata {

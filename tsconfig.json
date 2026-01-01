@@ -1,5 +1,9 @@
 {
   "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/types/*"]
+    },
+
     "target": "es2015",
     "useDefineForClassFields": true,
     "module": "es2015",
