@@ -5,7 +5,7 @@ import type { MetadataJson, Version } from '@/metadata'
 class Metadata {
   local: MetadataJson | null
   remote?: MetadataJson
-  remoteURL: string = 'null'
+  remoteURL: string = ''
 
   constructor(moduleName: string, fileName: string, remoteURL: string) {
     try {
@@ -13,11 +13,11 @@ class Metadata {
     } catch (err: any) {
       this.local = null
       error(err)
-      return
+      throw err // Module cannot work properly without metadata
     }
 
-    if (typeof remoteURL !== 'string') {
-      error(new TypeError('remoteURL is not a string').toString())
+    if (!remoteURL || !remoteURL.startsWith('http') || !remoteURL.includes('.')) {
+      error(new TypeError('remoteURL is not a valid URL').toString())
       return
     }
     this.remoteURL = remoteURL
